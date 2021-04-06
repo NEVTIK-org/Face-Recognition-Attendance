@@ -10,3 +10,6 @@ def attendance_csv(name, time=time):
         existing_name = [data.split(',')[0] for data in attendance_data]
         if name not in existing_name:
             file.writelines(f"\n{name},{time}")
+
+def attendance_sql(name, time=time):
+    pass
