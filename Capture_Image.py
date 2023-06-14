@@ -2,6 +2,7 @@ import csv
 
 import cv2
 import os
+import pandas as pd
 
 import os.path
 # counting the numbers
@@ -33,7 +34,7 @@ def takeImages():
     Id = input("Enter Your Id: ")
     name = input("Enter Your Name: ")
 
-    if(is_number(Id) and name.isalpha()):
+    if(is_number(Id) and (x.isalpha() or x.isspace() for x in name)):
         cam = cv2.VideoCapture(0)
         harcascadePath = "haarcascade_frontalface_default.xml"
         detector = cv2.CascadeClassifier(harcascadePath)
@@ -66,7 +67,15 @@ def takeImages():
         if(os.path.isfile("StudentDetails"+os.sep+"StudentDetails.csv")):
             with open("StudentDetails"+os.sep+"StudentDetails.csv", 'a+') as csvFile:
                 writer = csv.writer(csvFile)
-                writer.writerow(j for j in row)
+
+                # If input id already exists in the csv file then it will not append the data
+                # If input id does not exist in the csv file then it will append the data
+                df = pd.read_csv("StudentDetails"+os.sep+"StudentDetails.csv")
+                if int(Id) in df.values:
+                    print("Id already exists")
+                else:
+                    writer.writerow(j for j in row)
+                
             csvFile.close()
         else:
             with open("StudentDetails"+os.sep+"StudentDetails.csv", 'a+') as csvFile:
