@@ -32,13 +32,10 @@ def recognize_attendence():
         for(x, y, w, h) in faces:
             cv2.rectangle(im, (x, y), (x+w, y+h), (10, 159, 255), 2)
             Id, conf = recognizer.predict(gray[y:y+h, x:x+w])
-
-            if conf < 100:
-
+            if 50 > conf < 100:
                 aa = df.loc[df['Id'] == Id]['Name'].values
                 confstr = "  {0}%".format(round(100 - conf))
-                tt = str(Id)+"-"+aa
-
+                tt = str(Id) + "-" + aa
 
             else:
                 Id = '  Unknown  '
